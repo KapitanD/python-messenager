@@ -8,6 +8,7 @@ app = Flask(__name__)
 db = []
 users = set()
 bot = PokeBot()
+db.append(bot.check_message("/help", "все"))
 
 @app.route("/")
 def hello():
