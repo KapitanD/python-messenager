@@ -10,21 +10,24 @@ users = set()
 bot = PokeBot()
 db.append(bot.check_message("/help", "все"))
 
+
 @app.route("/")
 def hello():
     return "Hello, World!"
+
 
 @app.route("/status")
 def status():
     return jsonify(
         {
-            "status" : True,
-            "name" : "Telegraph app",
-            "time" : datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-            "messages_count" : len(db),
-            "users_count" : len(users)
+            "status": True,
+            "name": "Telegraph app",
+            "time": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            "messages_count": len(db),
+            "users_count": len(users)
         }
     )
+
 
 @app.route("/send", methods=["POST"])
 def send_message():
@@ -33,7 +36,7 @@ def send_message():
     if not isinstance(data, dict):
         return abort(400)
     if set(data.keys()) != {"name", "text"}:
-        return abort(400) 
+        return abort(400)
 
     name = data["name"]
     text = data["text"]
@@ -58,9 +61,10 @@ def send_message():
 
     return jsonify(
         {
-            "ok" : True
+            "ok": True
         }
     )
+
 
 @app.route("/messages", methods=["GET"])
 def get_messages():
@@ -80,5 +84,6 @@ def get_messages():
                 break
 
     return jsonify(result)
+
 
 app.run()

@@ -2,18 +2,20 @@ import requests
 import random
 import time as t
 
+
 class PokeBot:
     def __init__(self):
         self.catched = {}
         self.commands = {
-            "/help" : self.handle_help,
+            "/help": self.handle_help,
             "/catch": self.handle_catch,
-            "/list" : self.handle_list
+            "/list": self.handle_list
         }
 
     def catch(self, user):
         pokemon_id = random.randint(1, 890)
-        pokemon = requests.get(f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}").json()
+        pokemon = requests.get(
+            f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}").json()
         if user not in self.catched:
             self.catched[user] = []
 
@@ -23,7 +25,8 @@ class PokeBot:
     def handle_catch(self, user):
         pokemon = self.catch(user)
         types = [type["type"]["name"] for type in pokemon["types"]]
-        stats = {stat["stat"]["name"] : stat["base_stat"] for stat in pokemon["stats"]}
+        stats = {stat["stat"]["name"]: stat["base_stat"]
+                 for stat in pokemon["stats"]}
         return f'{user}, вы поймали покемона {pokemon["name"]}, его типы: {types}, его показатели {stats}'
 
     def handle_list(self, user):

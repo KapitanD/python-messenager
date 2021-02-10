@@ -13,6 +13,7 @@ db = [
     },
 ]
 
+
 def send_message(name, text):
     message = {
         'time': time.time(),
@@ -20,6 +21,7 @@ def send_message(name, text):
         'text': text,
     }
     db.append(message)
+
 
 def get_messages(after):
     """messages from db after given timestamp"""
