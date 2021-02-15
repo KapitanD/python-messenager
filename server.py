@@ -1,6 +1,9 @@
-from flask import Flask, request, jsonify, abort
+"""server.py
+Реализация сервера для мессенеджера
+"""
 import time as t
 from datetime import datetime
+from flask import Flask, request, jsonify, abort
 from pokebot import PokeBot
 
 app = Flask(__name__)
@@ -13,11 +16,16 @@ db.append(bot.check_message("/help", "все"))
 
 @app.route("/")
 def hello():
+    """handler for root
+    """
     return "Hello, World!"
 
 
 @app.route("/status")
 def status():
+    """handler for status
+    return status, name of service, current server time, number of messages and users
+    """
     return jsonify(
         {
             "status": True,
@@ -31,6 +39,19 @@ def status():
 
 @app.route("/send", methods=["POST"])
 def send_message():
+    """handler for send
+    POST body format:
+    {
+        "name" : string,
+        "text" : string
+    }
+    validation error - 400,
+    return message:
+    {
+        "ok" : True
+    }
+    Status code for ok: 200
+    """
     data = request.json
 
     if not isinstance(data, dict):
@@ -68,12 +89,25 @@ def send_message():
 
 @app.route("/messages", methods=["GET"])
 def get_messages():
-    """messages from db after given timestamp"""
-    # if "after" not in request.args:
-    #     return abort(400)
+    """handler for messages
+    GET needs parameter after : float
+    validation error - 400,
+    return message:
+    [
+        {
+            "time" : timestamp,
+            "name" : string,
+            "text" : string
+        },
+        ...
+    ]
+    Status code for ok: 200
+    """
     try:
         after = float(request.args["after"])
-    except:
+    except KeyError:
+        return abort(400)
+    except ValueError:
         return abort(400)
 
     result = []
