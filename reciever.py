@@ -4,12 +4,14 @@ from datetime import datetime
 
 after = 0
 
+
 def print_message(message):
     t = message["time"]
     dt = datetime.fromtimestamp(t).strftime("%H:%M:%S")
     print(
         f'{dt} {message["name"]}\n{message["text"]}\n'
     )
+
 
 while True:
     response = requests.get(
@@ -20,5 +22,5 @@ while True:
     for message in messages:
         print_message(message)
         after = message["time"]
-    
+
     time.sleep(1)
